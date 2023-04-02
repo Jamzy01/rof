@@ -1,0 +1,10 @@
+{
+	pet: tuple<string, u16, tuple<f64, f64>> = ("milo", 5, (5.5, 7));
+	friends: array<string> = ["Ryan", "Rory", "Mark"];
+	shopping_list: hashmap<string, u8> = {
+		"milk": None;
+		"onions": 3;
+	};
+	name = "James";
+	height: f64 = 176.4;
+}
