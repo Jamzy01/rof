@@ -13,24 +13,21 @@ mod tests {
         },
         rof_compat::RofCompat,
     };
+    use rof_rs_macros::RofCompat;
 
-    #[derive(Default)]
+    #[derive(Default, RofCompat)]
     struct User {
         name: String,
         age: usize,
     }
 
+    /*
+
     impl RofCompat for User {
         fn serialize(&self) -> Box<dyn DataValue> {
             Box::new(DataValueStruct::new(vec![
-                Property::new(
-                    String::from("name"),
-                    Box::new(DataValueString::new(self.name.clone())),
-                ),
-                Property::new(
-                    String::from("age"),
-                    Box::new(DataValueInteger::USIZE(self.age)),
-                ),
+                Property::new(String::from("name"), self.name.serialize()),
+                Property::new(String::from("age"), self.age.serialize()),
             ]))
         }
 
@@ -40,27 +37,28 @@ mod tests {
             let rof_object_struct = rof_object.as_struct_structure();
 
             if let Some(name) = rof_object_struct.get("name") {
-                user.name = name.as_string();
+                user.name = String::deserialize(name.clone_data_value());
             }
 
             if let Some(age) = rof_object_struct.get("age") {
-                user.age = age.as_usize();
+                user.age = usize::deserialize(age.clone_data_value());
             }
 
             user
         }
     }
 
+    */
+
     #[test]
     fn deserializer_test() {
-        let mut user = User::load_from_file(
-            "J:\\Programming\\Rust\\rust-object-format\\example_objects\\user.rof",
-        );
+        let mut user =
+            User::load_from_file("J:\\Programming\\Rust\\rof\\example_objects\\user.rof");
 
         user.age += 1;
 
         user.save_to_file(
-            "J:\\Programming\\Rust\\rust-object-format\\example_objects\\user.rof",
+            "J:\\Programming\\Rust\\rof\\example_objects\\user.rof",
             false,
         )
         .expect("Could not save user to file");
