@@ -1,5 +1,10 @@
 {
-	name = "Dorito";
-	age: usize = 52;
-	state: enum<string> = Eating("Doritoes");
+	name = "Jamzy";
+	age: usize = 49;
+	state: enum<f32> = Walking(0);
+	friends: array<string> = ["", "", "", ""];
+	passwords: hashmap<usize, string> = {
+		48: "amazingpassword";
+	};
+	iq: usize = 0;
 }

@@ -89,6 +89,7 @@ impl DataValue for DataValueEnum {
                 for serialized_property in ignoring_compliant_split_str(
                     &enum_data[..enum_data.len() - 1].trim(),
                     ',',
+                    true,
                     vec![
                         SplitIgnoreRule::new(SplitIgnoreRuleType::PAIR('"'))
                             .set_ecapsulates_raw_text(true),

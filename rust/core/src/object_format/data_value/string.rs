@@ -53,7 +53,8 @@ impl DataValue for DataValueString {
                     .unwrap_or(serialized_value)
                     .strip_suffix(|_| true)
                     .unwrap_or(serialized_value)
-                    .to_string(),
+                    .to_string()
+                    .replace("\\", ""),
             )));
         }
 

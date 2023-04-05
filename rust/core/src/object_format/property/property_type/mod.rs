@@ -98,6 +98,7 @@ impl PropertyType {
                         .strip_suffix(|_| true)
                         .unwrap_or(serialized_sub_types),
                     ',',
+                    true,
                     vec![SplitIgnoreRule::new(SplitIgnoreRuleType::NEST('<', '>'))],
                 ) {
                     sub_types.push(Self::deserialize(&serialized_sub_type));

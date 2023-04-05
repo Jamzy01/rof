@@ -40,6 +40,7 @@ impl Rof {
         match &ignoring_compliant_split_str(
             serialized_rof,
             ':',
+            true,
             vec![
                 SplitIgnoreRule::new(SplitIgnoreRuleType::PAIR('"')).set_ecapsulates_raw_text(true),
                 SplitIgnoreRule::new(SplitIgnoreRuleType::PAIR('\''))

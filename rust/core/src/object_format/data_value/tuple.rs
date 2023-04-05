@@ -73,6 +73,7 @@ impl DataValue for DataValueTuple {
         for serialized_property in ignoring_compliant_split_str(
             &serialized_value[1..serialized_value.len() - 1].trim(),
             ',',
+            true,
             vec![
                 SplitIgnoreRule::new(SplitIgnoreRuleType::PAIR('"')).set_ecapsulates_raw_text(true),
                 SplitIgnoreRule::new(SplitIgnoreRuleType::PAIR('\''))

@@ -1,5 +1,7 @@
 // A trait that allows a rust struct to serialized and deserialized
 
+use std::hash::Hash;
+
 use crate::object_format::{rof::Rof, DataValue};
 
 pub trait RofCompat: Default {

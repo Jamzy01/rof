@@ -102,6 +102,7 @@ impl DataValue for DataValueHashmap {
         for serialized_property in ignoring_compliant_split_str(
             &serialized_value[1..serialized_value.len() - 1].trim(),
             ';',
+            true,
             vec![
                 SplitIgnoreRule::new(SplitIgnoreRuleType::PAIR('"')).set_ecapsulates_raw_text(true),
                 SplitIgnoreRule::new(SplitIgnoreRuleType::PAIR('\''))
@@ -116,6 +117,7 @@ impl DataValue for DataValueHashmap {
             if let Some((serialized_key, serialized_value)) = ignoring_compliant_split_once(
                 &serialized_property,
                 ':',
+                true,
                 vec![
                     SplitIgnoreRule::new(SplitIgnoreRuleType::PAIR('"'))
                         .set_ecapsulates_raw_text(true),

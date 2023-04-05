@@ -46,7 +46,9 @@ impl SplitIgnoreRule {
                 }
 
                 if character == nest_end {
-                    self.nest_index -= 1;
+                    if self.nest_index > 0 {
+                        self.nest_index -= 1;
+                    }
                 }
             }
         }
@@ -62,6 +64,7 @@ impl SplitIgnoreRule {
 fn ignoring_compliant_split_str_max_splits(
     input_str: &str,
     split_character: char,
+    retain_backslashes: bool,
     ignore_rules: Vec<SplitIgnoreRule>,
     max_splits: Option<usize>,
 ) -> Vec<String> {
@@ -85,15 +88,15 @@ fn ignoring_compliant_split_str_max_splits(
                 if str_char == '\\' {
                     match char_iter.next() {
                         Some(escape_char) => {
+                            if retain_backslashes {
+                                built_str_fragment.push('\\');
+                            }
+
                             built_str_fragment.push(escape_char);
                         }
                         None => (),
                     }
-
-                    continue;
-                }
-
-                if str_char == split_character
+                } else if str_char == split_character
                     && ignore_rules
                         .iter()
                         .all(|ignore_rule| !ignore_rule.should_ignore())
@@ -122,18 +125,31 @@ fn ignoring_compliant_split_str_max_splits(
 pub fn ignoring_compliant_split_str<'a>(
     input_str: &str,
     split_character: char,
+    retain_backslashes: bool,
     ignore_rules: Vec<SplitIgnoreRule>,
 ) -> Vec<String> {
-    ignoring_compliant_split_str_max_splits(input_str, split_character, ignore_rules, None)
+    ignoring_compliant_split_str_max_splits(
+        input_str,
+        split_character,
+        retain_backslashes,
+        ignore_rules,
+        None,
+    )
 }
 
 pub fn ignoring_compliant_split_once(
     input_str: &str,
     split_character: char,
+    retain_backslashes: bool,
     ignore_rules: Vec<SplitIgnoreRule>,
 ) -> Option<(String, String)> {
-    let split_data =
-        ignoring_compliant_split_str_max_splits(input_str, split_character, ignore_rules, Some(1));
+    let split_data = ignoring_compliant_split_str_max_splits(
+        input_str,
+        split_character,
+        retain_backslashes,
+        ignore_rules,
+        Some(1),
+    );
 
     match split_data.len() {
         2 => Some((

@@ -40,9 +40,15 @@ impl DataValue for DataValueCharacter {
             && serialized_value.ends_with("'")
             && serialized_value.chars().count() == 3
         {
-            return Some(Box::new(Self::new(
-                serialized_value.chars().skip(1).next().unwrap(),
-            )));
+            if serialized_value.starts_with("'\\") {
+                return Some(Box::new(Self::new(
+                    serialized_value.chars().skip(2).next().unwrap(),
+                )));
+            } else {
+                return Some(Box::new(Self::new(
+                    serialized_value.chars().skip(1).next().unwrap(),
+                )));
+            }
         }
 
         None
