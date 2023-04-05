@@ -6,7 +6,8 @@ mod tests {
     use rof_rs_core::{
         object_format::{
             data_value::{
-                integer::DataValueInteger, string::DataValueString, struct_value::DataValueStruct,
+                enum_value::DataValueEnum, integer::DataValueInteger, string::DataValueString,
+                struct_value::DataValueStruct,
             },
             property::Property,
             DataValue,
@@ -15,10 +16,59 @@ mod tests {
     };
     use rof_rs_macros::RofCompat;
 
-    #[derive(Default, RofCompat)]
+    #[derive(Debug, Default, RofCompat)]
     struct User {
         name: String,
         age: usize,
+        state: UserState,
+    }
+
+    #[derive(Debug, Default)]
+    enum UserState {
+        Walking(f32),
+        #[default]
+        Sleeping,
+        Jumping,
+        Eating(String),
+    }
+
+    impl RofCompat for UserState {
+        fn serialize(&self) -> Box<dyn DataValue> {
+            Box::new(match self {
+                Self::Walking(arg_0) => DataValueEnum::new(
+                    String::from("Walking"),
+                    vec![Property::unnamed(f32::serialize(arg_0))],
+                ),
+                Self::Sleeping => DataValueEnum::simple(String::from("Walking")),
+                Self::Jumping => DataValueEnum::simple(String::from("Jumping")),
+                Self::Eating(arg_0) => DataValueEnum::new(
+                    String::from("Eating"),
+                    vec![Property::unnamed(String::serialize(arg_0))],
+                ),
+            })
+        }
+
+        fn deserialize(rof_object: Box<dyn DataValue>) -> Self {
+            let (enum_name, enum_args) = rof_object.as_enum_structure();
+
+            match enum_name.as_str() {
+                "Walking" => Self::Walking(f32::deserialize(
+                    enum_args
+                        .get(0)
+                        .unwrap_or(&Box::new(usize::default().serialize()))
+                        .clone_data_value(),
+                )),
+                "Sleeping" => Self::Sleeping,
+                "Jumping" => Self::Jumping,
+                "Eating" => Self::Eating(String::deserialize(
+                    enum_args
+                        .get(0)
+                        .unwrap_or(&Box::new(String::default().serialize()))
+                        .clone_data_value(),
+                )),
+                _ => Self::default(),
+            }
+        }
     }
 
     /*
@@ -52,14 +102,17 @@ mod tests {
 
     #[test]
     fn deserializer_test() {
-        let mut user =
-            User::load_from_file("J:\\Programming\\Rust\\rof\\example_objects\\user.rof");
+        let mut user = User::load_from_file(
+            "C:\\Users\\JamesG\\Documents\\Programming\\rof\\example_objects\\user.rof",
+        );
 
         user.age += 1;
 
+        println!("{:?}", user);
+
         user.save_to_file(
-            "J:\\Programming\\Rust\\rof\\example_objects\\user.rof",
-            false,
+            "C:\\Users\\JamesG\\Documents\\Programming\\rof\\example_objects\\user.rof",
+            true,
         )
         .expect("Could not save user to file");
     }

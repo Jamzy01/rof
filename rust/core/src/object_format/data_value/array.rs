@@ -83,10 +83,10 @@ impl DataValue for DataValueArray {
                 continue;
             }
 
-            properties.push(Property::new(
-                String::new(),
-                data_value_from_string(&property_type, serialized_property.trim()),
-            ));
+            properties.push(Property::unnamed(data_value_from_string(
+                &property_type,
+                serialized_property.trim(),
+            )));
         }
 
         Some(Box::new(Self::new(property_type, properties)))

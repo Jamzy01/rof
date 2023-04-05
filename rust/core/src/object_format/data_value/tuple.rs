@@ -86,10 +86,10 @@ impl DataValue for DataValueTuple {
             }
 
             if let Some(sub_type) = sub_type_iter.next() {
-                properties.push(Property::new(
-                    String::new(),
-                    data_value_from_string(sub_type, serialized_property.trim()),
-                ));
+                properties.push(Property::unnamed(data_value_from_string(
+                    sub_type,
+                    serialized_property.trim(),
+                )));
             } else {
                 break;
             }

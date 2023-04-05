@@ -1,1 +1,5 @@
-{name="Dorito";age:usize=12;}
+{
+	name = "Dorito";
+	age: usize = 52;
+	state: enum<string> = Eating("Doritoes");
+}

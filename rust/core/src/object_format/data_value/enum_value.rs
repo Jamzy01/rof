@@ -20,6 +20,10 @@ impl DataValueEnum {
         }
     }
 
+    pub fn simple(enum_name: String) -> Self {
+        Self::new(enum_name, Vec::new())
+    }
+
     pub fn none() -> Self {
         Self::new(String::from("None"), Vec::new())
     }
@@ -99,10 +103,10 @@ impl DataValue for DataValueEnum {
                     }
 
                     if let Some(sub_type) = sub_type_iter.next() {
-                        properties.push(Property::new(
-                            String::new(),
-                            data_value_from_string(sub_type, serialized_property.trim()),
-                        ));
+                        properties.push(Property::unnamed(data_value_from_string(
+                            sub_type,
+                            serialized_property.trim(),
+                        )));
                     } else {
                         break;
                     }

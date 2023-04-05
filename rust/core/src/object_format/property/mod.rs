@@ -81,6 +81,10 @@ impl Property {
         }
     }
 
+    pub fn unnamed(property_value: Box<dyn DataValue>) -> Self {
+        Self::new(String::new(), property_value)
+    }
+
     pub fn serialize(&self, pretty_print: bool, tab_index: usize) -> String {
         match pretty_print {
             true => match self.get_value_type().is_implicit() {
