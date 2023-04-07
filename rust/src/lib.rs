@@ -18,7 +18,6 @@ mod tests {
     #[derive(Debug, Default, RofCompat)]
     struct User {
         name: String,
-        location: (f32, f32),
         age: usize,
         state: UserState,
         friends: Vec<String>,

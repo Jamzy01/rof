@@ -14,7 +14,7 @@ edition = "2021"
 name = "rof_rs_macros"
 version = "0.1.0"
 description = "Rust Object Format API Macros for Rust."
-license = "AGPL-3.0 license"
+license = "ISC"
 repository = "https://github.com/Jamzy01/rof"
 
 [lib]
