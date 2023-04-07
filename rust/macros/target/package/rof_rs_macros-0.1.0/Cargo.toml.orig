@@ -1,0 +1,18 @@
+[package]
+name = "rof_rs_macros"
+description = "Rust Object Format API Macros for Rust."
+version = "0.1.0"
+edition = "2021"
+license="AGPL-3.0 license"
+repository="https://github.com/Jamzy01/rof"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+proc-macro = true
+
+[dependencies]
+proc-macro2 = "1.0.55"
+quote = "1.0.26"
+rof_rs_core = { path = "../core", version = "0.1.0" }
+syn = { version = "2.0.13", features = ["extra-traits"] }

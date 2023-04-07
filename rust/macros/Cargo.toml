@@ -3,7 +3,7 @@ name = "rof_rs_macros"
 description = "Rust Object Format API Macros for Rust."
 version = "0.1.0"
 edition = "2021"
-license="AGPL-3.0 license"
+license="ISC"
 repository="https://github.com/Jamzy01/rof"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
