@@ -3,7 +3,7 @@ name = "rof_rs_core"
 description = "Rust Object Format Core API for Rust."
 version = "0.1.0"
 edition = "2021"
-license="AGPL-3.0 license"
+license="ISC"
 repository="https://github.com/Jamzy01/rof"
 readme="../../README.md"
 
