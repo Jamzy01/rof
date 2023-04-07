@@ -7,10 +7,7 @@ mod tests {
 
     use rof_rs_core::{
         object_format::{
-            data_value::{
-                enum_value::DataValueEnum, integer::DataValueInteger, string::DataValueString,
-                struct_value::DataValueStruct,
-            },
+            data_value::{enum_value::DataValueEnum, struct_value::DataValueStruct},
             property::Property,
             DataValue,
         },

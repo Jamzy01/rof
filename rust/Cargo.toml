@@ -2,6 +2,9 @@
 name = "rust_object_format"
 version = "0.1.0"
 edition = "2021"
+license="AGPL-3.0 license"
+repository="https://github.com/Jamzy01/rof"
+readme="../README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
