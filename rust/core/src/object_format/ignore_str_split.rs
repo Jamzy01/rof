@@ -54,6 +54,10 @@ impl SplitIgnoreRule {
         }
     }
 
+    pub fn in_raw_text(&self) -> bool {
+        self.should_ignore() && self.encapsulates_raw_text
+    }
+
     pub fn should_ignore(&self) -> bool {
         self.within_pair || self.nest_index > 0
     }
@@ -81,9 +85,23 @@ fn ignoring_compliant_split_str_max_splits(
     loop {
         match char_iter.next() {
             Some(str_char) => {
-                ignore_rules
-                    .iter_mut()
-                    .for_each(|ignore_rule| ignore_rule.read_char(str_char));
+                if ignore_rules
+                    .iter()
+                    .any(|ignore_rule| ignore_rule.in_raw_text())
+                {
+                    // Only check for rules activating the raw text state
+
+                    ignore_rules
+                        .iter_mut()
+                        .filter(|ignore_rule| ignore_rule.in_raw_text())
+                        .for_each(|ignore_rule| ignore_rule.read_char(str_char));
+                } else {
+                    // Check for any rule
+
+                    ignore_rules
+                        .iter_mut()
+                        .for_each(|ignore_rule| ignore_rule.read_char(str_char));
+                }
 
                 if str_char == '\\' {
                     match char_iter.next() {
@@ -97,9 +115,9 @@ fn ignoring_compliant_split_str_max_splits(
                         None => (),
                     }
                 } else if str_char == split_character
-                    && ignore_rules
+                    && !ignore_rules
                         .iter()
-                        .all(|ignore_rule| !ignore_rule.should_ignore())
+                        .any(|ignore_rule| ignore_rule.should_ignore())
                     && (max_splits.is_none() || splits < max_splits.unwrap())
                 {
                     str_fragments.push(built_str_fragment.clone());

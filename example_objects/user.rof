@@ -1,8 +1,8 @@
 {
 	name = "Jamzy";
-	age: usize = 49;
+	age: usize = 66;
 	state: enum<f32> = Walking(0);
-	friends: array<string> = ["", "", "", ""];
+	friends: array<string> = ["dorito", "", "", ""];
 	passwords: hashmap<usize, string> = {
 		48: "amazingpassword";
 	};
