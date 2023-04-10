@@ -1,9 +1,9 @@
-import { PropertyType } from "../property_type/property_type.mjs";
+import { PropertyType } from "../property_type/property_type.js";
 
 export class DataValueBool {
-  #inner;
+  #inner: boolean;
 
-  constructor(inner) {
+  constructor(inner: boolean) {
     this.#inner = inner;
   }
 
@@ -16,20 +16,12 @@ export class DataValueBool {
     }
   }
 
-  static deserialize(serializedDataValueType, serializedBool) {
-    console.log("DESERIALIZING BOOL");
-
-    console.log(serializedBool);
-
-    console.log(serializedDataValueType);
-
+  static deserialize(serializedDataValueType: PropertyType, serializedBool: string) {
     if (
       (!serializedDataValueType.isImplicit() &&
         serializedDataValueType.baseType != "bool") ||
       serializedDataValueType.subTypesIncluded()
     ) {
-      console.log("FAILED BOOL DESERIALIZING CHECKS");
-
       return;
     }
 

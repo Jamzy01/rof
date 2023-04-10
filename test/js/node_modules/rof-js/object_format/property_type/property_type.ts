@@ -2,20 +2,20 @@ import {
   NestSplitIgnoreRuleType,
   ignoringCompliantSplitOnce,
   ignoringCompliantSplitString,
-} from "../ignore_string_split.mjs";
+} from "../ignore_string_split.js";
 
 export class PropertyType {
   #baseType; // String
   #subTypes; // String
 
-  constructor(baseType, subTypes) {
+  constructor(baseType: string, subTypes: PropertyType[]) {
     this.#baseType = baseType;
     this.#subTypes = subTypes;
   }
 
   serialize() {}
 
-  static deserialize(serializedPropertyType) {
+  static deserialize(serializedPropertyType: string) {
     if (!serializedPropertyType.includes("<")) {
       // No sub types
 
@@ -29,7 +29,7 @@ export class PropertyType {
       []
     );
 
-    let subTypes = [];
+    let subTypes: PropertyType[] = [];
 
     ignoringCompliantSplitString(serializedSubTypes.slice(0, -1), ",", true, [
       new NestSplitIgnoreRuleType("<", ">"),
@@ -40,22 +40,21 @@ export class PropertyType {
     return new PropertyType(baseType.trim(), subTypes);
   }
 
-  static simple(baseType) {
+  static simple(baseType: string) {
     return new PropertyType(baseType, []);
   }
 
   static implicit() {
-    return PropertyType.simple(undefined);
+    return PropertyType.simple("");
   }
 
   static empty() {
-    return PropertyType.simple(null);
+    return PropertyType.simple("");
   }
 
   isImplicit() {
     return (
       this.#baseType == "" ||
-      this.#baseType == undefined ||
       ["bool", "char", "string", "struct"].includes(this.#baseType)
     );
   }

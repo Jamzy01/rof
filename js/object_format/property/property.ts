@@ -1,13 +1,12 @@
-import { dataValueFromString } from "../data_value/data_value.mjs";
-import { DataValueBool } from "../data_value/data_value_bool.mjs";
-import { ignoringCompliantSplitOnce } from "../ignore_string_split.mjs";
-import { PropertyType } from "../property_type/property_type.mjs";
+import { DataValue, DataValueBool, dataValueFromString } from "../data_value/data_value";
+import { ignoringCompliantSplitOnce } from "../ignore_string_split.js";
+import { PropertyType } from "../property_type/property_type.js";
 
 export class Property {
-  #propertyIndex; // String (property name)
-  #propertyValue; // Data Value Inheriting Object
+  #propertyIndex;
+  #propertyValue;
 
-  constructor(propertyIndex, propertyValue) {
+  constructor(propertyIndex: string, propertyValue: DataValue) {
     this.#propertyIndex = propertyIndex;
     this.#propertyValue = propertyValue;
   }
@@ -22,10 +21,10 @@ export class Property {
     }
   }
 
-  static deserialize(serialized_property) {
-    let propertyIndex = "";
+  static deserialize(serialized_property: string) {
+    let propertyIndex: string = "";
 
-    let propertyValue = new DataValueBool(false); //TODO: Replace with none value when I implement it
+    let propertyValue: DataValue = new DataValueBool(false); //TODO: Replace with none value when I implement it
 
     // Get Property Index (Property Name)
 

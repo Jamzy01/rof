@@ -1,7 +1,7 @@
 export class SplitIgnoreRule {
   constructor() {}
 
-  readChar(char) {}
+  readChar(char: string) {}
 
   shouldIgnore() {
     false;
@@ -17,24 +17,25 @@ export class SplitIgnoreRule {
 }
 
 export class PairSplitIgnoreRuleType extends SplitIgnoreRule {
-  #pairChar; /* Won't split when within a pair of this character, eg single or double quotation marks */
-  #encapsulatesRawText; // Encapsulates literals
-  #withinPair;
+  #pairChar: string; /* Won't split when within a pair of this character, eg single or double quotation marks */
+  #encapsulatesRawText: boolean; // Encapsulates literals
+  #withinPair: boolean;
 
-  constructor(char) {
+  constructor(char: string) {
     super();
 
     this.#pairChar = char;
+    this.#encapsulatesRawText = false;
     this.#withinPair = false;
   }
 
-  setEncapsulatesRawText(encapsulatesRawText) {
+  setEncapsulatesRawText(encapsulatesRawText: boolean) {
     this.#encapsulatesRawText = encapsulatesRawText;
 
     return this;
   }
 
-  readChar(char) {
+  readChar(char: string) {
     if (char == this.#pairChar) {
       this.#withinPair = !this.#withinPair;
     }
@@ -60,7 +61,7 @@ export class NestSplitIgnoreRuleType extends SplitIgnoreRule {
   #nestEndChar;
   #nestIndex;
 
-  constructor(nestStartChar, nestEndChar) {
+  constructor(nestStartChar: string, nestEndChar: string) {
     super();
 
     this.#nestStartChar = nestStartChar;
@@ -68,7 +69,7 @@ export class NestSplitIgnoreRuleType extends SplitIgnoreRule {
     this.#nestIndex = 0;
   }
 
-  readChar(char) {
+  readChar(char: string) {
     if (char == this.#nestStartChar) {
       this.#nestIndex += 1;
     }
@@ -94,11 +95,11 @@ export class NestSplitIgnoreRuleType extends SplitIgnoreRule {
 }
 
 function ignoringCompliantSplitStringMaxSplits(
-  inputString,
-  splitCharacter,
-  retainBackslashes,
-  ignoreRules,
-  maxSplits
+  inputString: string,
+  splitCharacter: string,
+  retainBackslashes: boolean,
+  ignoreRules: SplitIgnoreRule[],
+  maxSplits: number | null
 ) {
   let stringFragments = [];
 
@@ -164,10 +165,10 @@ function ignoringCompliantSplitStringMaxSplits(
 }
 
 export function ignoringCompliantSplitString(
-  inputString,
-  splitCharacter,
-  retainBackslashes,
-  ignoreRules
+  inputString: string,
+  splitCharacter: string,
+  retainBackslashes: boolean,
+  ignoreRules: SplitIgnoreRule[]
 ) {
   return ignoringCompliantSplitStringMaxSplits(
     inputString,
@@ -179,10 +180,10 @@ export function ignoringCompliantSplitString(
 }
 
 export function ignoringCompliantSplitOnce(
-  inputString,
-  splitCharacter,
-  retainBackslashes,
-  ignoreRules
+  inputString: string,
+  splitCharacter: string,
+  retainBackslashes: boolean,
+  ignoreRules: SplitIgnoreRule[]
 ) {
   let splitString = ignoringCompliantSplitStringMaxSplits(
     inputString,
