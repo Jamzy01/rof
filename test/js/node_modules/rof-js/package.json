@@ -11,7 +11,8 @@
   "license": "AGPL-3.0 license",
   "exports": {
     ".": {
-      "import": "./index.mjs"
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
     },
     "./package.json": "./package.json"
   },

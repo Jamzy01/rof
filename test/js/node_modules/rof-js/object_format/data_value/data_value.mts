@@ -1,5 +1,5 @@
-import { PropertyType } from "../property_type/property_type";
-import { DataValueBool } from "./data_value_bool";
+import { PropertyType } from "../property_type/property_type.mjs";
+import { DataValueBool } from "./data_value_bool.mjs";
 
 export abstract class DataValue {
   constructor() {}

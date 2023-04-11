@@ -1,6 +1,6 @@
-import { DataValue, DataValueBool, dataValueFromString } from "../data_value/data_value";
-import { ignoringCompliantSplitOnce } from "../ignore_string_split.js";
-import { PropertyType } from "../property_type/property_type.js";
+import { DataValue, DataValueBool, dataValueFromString } from "../data_value/data_value.mjs";
+import { ignoringCompliantSplitOnce } from "../ignore_string_split.mjs";
+import { PropertyType } from "../property_type/property_type.mjs";
 
 export class Property {
   #propertyIndex;
@@ -55,8 +55,6 @@ export class Property {
       // Implicit type (only supported in certain situations)
 
       propertyIndex = rawData.trim();
-
-      console.log("IMPLICIT TYPE");
 
       propertyValue = dataValueFromString(
         PropertyType.implicit(),

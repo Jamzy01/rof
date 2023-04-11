@@ -1,4 +1,4 @@
-import { PropertyType } from "../property_type/property_type.js";
+import { PropertyType } from "../property_type/property_type.mjs";
 
 export class DataValueBool {
   #inner: boolean;

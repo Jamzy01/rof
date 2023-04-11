@@ -2,7 +2,7 @@ import {
   NestSplitIgnoreRuleType,
   ignoringCompliantSplitOnce,
   ignoringCompliantSplitString,
-} from "../ignore_string_split.js";
+} from "../ignore_string_split.mjs";
 
 export class PropertyType {
   #baseType; // String
