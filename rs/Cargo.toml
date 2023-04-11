@@ -1,5 +1,5 @@
 [package]
-name = "rust-object-format"
+name = "rof-rs"
 description = "Rust Object Format API for Rust."
 version = "0.1.1"
 edition = "2021"
