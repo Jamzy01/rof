@@ -1,7 +1,7 @@
 export declare class PropertyType {
     #private;
     constructor(baseType: string, subTypes: PropertyType[]);
-    serialize(): void;
+    serialized(): string;
     static deserialize(serializedPropertyType: string): PropertyType;
     static simple(baseType: string): PropertyType;
     static implicit(): PropertyType;

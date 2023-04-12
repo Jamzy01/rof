@@ -1,27 +1,29 @@
-import { DataValue, DataValueBool, dataValueFromString } from "../data_value/data_value.mjs";
+import { DataValue } from "../data_value/data_value.mjs";
+import { dataValueFromString } from "../data_value/universal_data_value_deserializer.mjs";
+import { DataValueBool } from "../data_value/data_value_bool.mjs";
 import { ignoringCompliantSplitOnce } from "../ignore_string_split.mjs";
 import { PropertyType } from "../property_type/property_type.mjs";
 
 export class Property {
-  #propertyIndex;
-  #propertyValue;
+  propertyIndex: string;
+  #propertyValue: DataValue;
 
   constructor(propertyIndex: string, propertyValue: DataValue) {
-    this.#propertyIndex = propertyIndex;
+    this.propertyIndex = propertyIndex;
     this.#propertyValue = propertyValue;
   }
 
-  serialize() {
-    if (this.#propertyValue.getType().isImplicit()) {
-      return `${this.#propertyIndex} = ${this.#propertyValue.serialize()}`;
+  serialize(): string {
+    if (this.#propertyValue.type.isImplicit()) {
+      return `${this.propertyIndex} = ${this.#propertyValue.serialized}`;
     } else {
-      return `${this.#propertyIndex}: ${this.#propertyValue
-        .getType()
-        .serialize()} = ${this.#propertyValue.serialize()}`;
+      return `${this.propertyIndex}: ${this.#propertyValue
+        .type
+        .serialized} = ${this.#propertyValue.serialized}`;
     }
   }
 
-  static deserialize(serialized_property: string) {
+  static deserialize(serializedProperty: string) {
     let propertyIndex: string = "";
 
     let propertyValue: DataValue = new DataValueBool(false); //TODO: Replace with none value when I implement it
@@ -29,7 +31,7 @@ export class Property {
     // Get Property Index (Property Name)
 
     let [rawData, rawValue] = ignoringCompliantSplitOnce(
-      serialized_property.slice(0, -1),
+      serializedProperty,
       "=",
       true,
       []
@@ -47,19 +49,29 @@ export class Property {
 
       propertyIndex = rawIndex.trim();
 
-      propertyValue = dataValueFromString(
+      let deserializedPropertyType: DataValue | null = dataValueFromString(
         PropertyType.deserialize(rawType),
         rawValue.trim()
       );
+
+      if (deserializedPropertyType != null) {
+        propertyValue = deserializedPropertyType as DataValue;
+      }
+
+      
     } else {
       // Implicit type (only supported in certain situations)
 
       propertyIndex = rawData.trim();
 
-      propertyValue = dataValueFromString(
+      let deserializedPropertyType: DataValue | null = dataValueFromString(
         PropertyType.implicit(),
         rawValue.trim()
       );
+
+      if (deserializedPropertyType != null) {
+        propertyValue = deserializedPropertyType as DataValue;
+      }
     }
 
     if (propertyValue == null) {
@@ -67,5 +79,9 @@ export class Property {
     }
 
     return new Property(propertyIndex, propertyValue);
+  }
+
+  get propertyValue(): DataValue {
+    return this.#propertyValue;
   }
 }

@@ -1,23 +1,13 @@
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
-};
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _DataValueBool_inner;
 import { PropertyType } from "../property_type/property_type.mjs";
-export class DataValueBool {
+import { DataValue } from "./data_value.mjs";
+export class DataValueBool extends DataValue {
+    #inner;
     constructor(inner) {
-        _DataValueBool_inner.set(this, void 0);
-        __classPrivateFieldSet(this, _DataValueBool_inner, inner, "f");
+        super();
+        this.#inner = inner;
     }
-    serialize() {
-        switch (__classPrivateFieldGet(this, _DataValueBool_inner, "f")) {
+    get serialized() {
+        switch (this.#inner) {
             case true:
                 return "true";
             case false:
@@ -28,7 +18,7 @@ export class DataValueBool {
         if ((!serializedDataValueType.isImplicit() &&
             serializedDataValueType.baseType != "bool") ||
             serializedDataValueType.subTypesIncluded()) {
-            return;
+            return undefined;
         }
         switch (serializedBool) {
             case "true":
@@ -39,8 +29,7 @@ export class DataValueBool {
                 return undefined;
         }
     }
-    getType() {
+    get type() {
         return PropertyType.simple("bool");
     }
 }
-_DataValueBool_inner = new WeakMap();

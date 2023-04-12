@@ -1,13 +1,16 @@
 import { PropertyType } from "../property_type/property_type.mjs";
+import { DataValue } from "./data_value.mjs";
 
-export class DataValueBool {
+export class DataValueBool extends DataValue {
   #inner: boolean;
 
   constructor(inner: boolean) {
+    super();
+
     this.#inner = inner;
   }
 
-  serialize() {
+  get serialized(): string {
     switch (this.#inner) {
       case true:
         return "true";
@@ -16,13 +19,13 @@ export class DataValueBool {
     }
   }
 
-  static deserialize(serializedDataValueType: PropertyType, serializedBool: string) {
+  static deserialize(serializedDataValueType: PropertyType, serializedBool: string): DataValue | undefined {
     if (
       (!serializedDataValueType.isImplicit() &&
         serializedDataValueType.baseType != "bool") ||
       serializedDataValueType.subTypesIncluded()
     ) {
-      return;
+      return undefined;
     }
 
     switch (serializedBool) {
@@ -35,7 +38,7 @@ export class DataValueBool {
     }
   }
 
-  getType() {
+  get type(): PropertyType {
     return PropertyType.simple("bool");
   }
 }

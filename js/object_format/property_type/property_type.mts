@@ -5,15 +5,23 @@ import {
 } from "../ignore_string_split.mjs";
 
 export class PropertyType {
-  #baseType; // String
-  #subTypes; // String
+  #baseType: string;
+  #subTypes: PropertyType[];
 
   constructor(baseType: string, subTypes: PropertyType[]) {
     this.#baseType = baseType;
     this.#subTypes = subTypes;
   }
 
-  serialize() {}
+  serialized(): string {
+    if (this.#subTypes.length < 1) {
+      // No sub types
+
+      return this.#baseType;
+    }
+
+    return `${this.#baseType}<${this.#subTypes.map(subType => subType.serialized).join(", ")}>`;
+  }
 
   static deserialize(serializedPropertyType: string) {
     if (!serializedPropertyType.includes("<")) {

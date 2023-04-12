@@ -1,8 +1,9 @@
 import { PropertyType } from "../property_type/property_type.mjs";
-export declare class DataValueBool {
+import { DataValue } from "./data_value.mjs";
+export declare class DataValueBool extends DataValue {
     #private;
     constructor(inner: boolean);
-    serialize(): "true" | "false";
-    static deserialize(serializedDataValueType: PropertyType, serializedBool: string): DataValueBool | undefined;
-    getType(): PropertyType;
+    get serialized(): string;
+    static deserialize(serializedDataValueType: PropertyType, serializedBool: string): DataValue | undefined;
+    get type(): PropertyType;
 }

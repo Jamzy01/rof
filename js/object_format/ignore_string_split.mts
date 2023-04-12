@@ -110,30 +110,30 @@ function ignoringCompliantSplitStringMaxSplits(
   let oneTimeIgnoreRules = ignoreRules.map((ignoreRule) => ignoreRule.clone());
 
   for (let i = 0; i < inputString.length; i++) {
-    let string_char = inputString[i];
+    let stringChar = inputString[i];
 
     if (oneTimeIgnoreRules.some((ignoreRule) => ignoreRule.inRawText())) {
       // Only check for rules activating the raw text state
 
       oneTimeIgnoreRules.forEach((ignoreRule) => {
         if (ignoreRule.inRawText()) {
-          ignoreRule.readChar(string_char);
+          ignoreRule.readChar(stringChar);
         }
       });
     } else {
       // Check for any rule
 
       oneTimeIgnoreRules.forEach((ignoreRule) => {
-        ignoreRule.readChar(string_char);
+        ignoreRule.readChar(stringChar);
       });
     }
 
-    if (string_char == "\\") {
+    if (stringChar == "\\") {
       i++;
 
-      let escaped_character = inputString[i];
+      let escapedChar = inputString[i];
 
-      if (escaped_character == null) {
+      if (escapedChar == null) {
         break;
       }
 
@@ -141,9 +141,9 @@ function ignoringCompliantSplitStringMaxSplits(
         builtStringFragment = builtStringFragment + "\\";
       }
 
-      builtStringFragment = builtStringFragment + escaped_character;
+      builtStringFragment = builtStringFragment + escapedChar;
     } else if (
-      string_char == splitCharacter &&
+      stringChar == splitCharacter &&
       !oneTimeIgnoreRules.some((ignoreRule) => ignoreRule.shouldIgnore()) &&
       (maxSplits == null || splits < maxSplits)
     ) {
@@ -153,11 +153,11 @@ function ignoringCompliantSplitStringMaxSplits(
 
       builtStringFragment = "";
     } else {
-      builtStringFragment = builtStringFragment + string_char;
+      builtStringFragment = builtStringFragment + stringChar;
     }
   }
 
-  if (builtStringFragment != "") {
+  if (builtStringFragment.length > 0) {
     stringFragments.push(builtStringFragment);
   }
 

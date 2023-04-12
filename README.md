@@ -8,8 +8,8 @@ TL;DR A library that can serialize and deserialize rust objects to string which 
 
 [Design Goals](#design-goals)  
 [Language](#language)  
-[Rust Library Docs](#rust-docs)  
-[JS Library Docs](#javascript-docs)
+[Rust Library Docs](#rust-library-documentation)  
+[JS Library Docs](#javascript-library-documentation)
 
 ## Design Goals
 

@@ -38,7 +38,7 @@ impl DataValue for DataValueCharacter {
 
         if serialized_value.starts_with("'")
             && serialized_value.ends_with("'")
-            && serialized_value.chars().count() == 3
+            && serialized_value.chars().count() <= 4
         {
             if serialized_value.starts_with("'\\") {
                 return Some(Box::new(Self::new(

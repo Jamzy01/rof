@@ -1,16 +1,13 @@
-import { DataValueBool } from "./data_value_bool.mjs";
+import { PropertyType } from "../property_type/property_type.mjs";
 export class DataValue {
     constructor() { }
+    get serialized() {
+        return "";
+    }
     static deserialize(serializedDataValueType, serializedDataValue) {
-        return new DataValueBool(false);
+        return;
     }
-    ;
-}
-export function dataValueFromString(dataValueType, serializedDataValue) {
-    let serializedDataValueAsBool = DataValueBool.deserialize(dataValueType, serializedDataValue);
-    if (serializedDataValueAsBool != null) {
-        return serializedDataValueAsBool;
+    get type() {
+        return PropertyType.empty();
     }
-    return new DataValueBool(false);
 }
-export { DataValueBool };

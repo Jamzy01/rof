@@ -1,15 +1,3 @@
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
-};
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _PairSplitIgnoreRuleType_pairChar, _PairSplitIgnoreRuleType_encapsulatesRawText, _PairSplitIgnoreRuleType_withinPair, _NestSplitIgnoreRuleType_nestStartChar, _NestSplitIgnoreRuleType_nestEndChar, _NestSplitIgnoreRuleType_nestIndex;
 export class SplitIgnoreRule {
     constructor() { }
     readChar(char) { }
@@ -24,97 +12,95 @@ export class SplitIgnoreRule {
     }
 }
 export class PairSplitIgnoreRuleType extends SplitIgnoreRule {
+    #pairChar;
+    #encapsulatesRawText;
+    #withinPair;
     constructor(char) {
         super();
-        _PairSplitIgnoreRuleType_pairChar.set(this, void 0);
-        _PairSplitIgnoreRuleType_encapsulatesRawText.set(this, void 0);
-        _PairSplitIgnoreRuleType_withinPair.set(this, void 0);
-        __classPrivateFieldSet(this, _PairSplitIgnoreRuleType_pairChar, char, "f");
-        __classPrivateFieldSet(this, _PairSplitIgnoreRuleType_encapsulatesRawText, false, "f");
-        __classPrivateFieldSet(this, _PairSplitIgnoreRuleType_withinPair, false, "f");
+        this.#pairChar = char;
+        this.#encapsulatesRawText = false;
+        this.#withinPair = false;
     }
     setEncapsulatesRawText(encapsulatesRawText) {
-        __classPrivateFieldSet(this, _PairSplitIgnoreRuleType_encapsulatesRawText, encapsulatesRawText, "f");
+        this.#encapsulatesRawText = encapsulatesRawText;
         return this;
     }
     readChar(char) {
-        if (char == __classPrivateFieldGet(this, _PairSplitIgnoreRuleType_pairChar, "f")) {
-            __classPrivateFieldSet(this, _PairSplitIgnoreRuleType_withinPair, !__classPrivateFieldGet(this, _PairSplitIgnoreRuleType_withinPair, "f"), "f");
+        if (char == this.#pairChar) {
+            this.#withinPair = !this.#withinPair;
         }
     }
     shouldIgnore() {
-        return __classPrivateFieldGet(this, _PairSplitIgnoreRuleType_withinPair, "f");
+        return this.#withinPair;
     }
     inRawText() {
-        return this.shouldIgnore() && __classPrivateFieldGet(this, _PairSplitIgnoreRuleType_encapsulatesRawText, "f");
+        return this.shouldIgnore() && this.#encapsulatesRawText;
     }
     clone() {
-        return new PairSplitIgnoreRuleType(__classPrivateFieldGet(this, _PairSplitIgnoreRuleType_pairChar, "f")).setEncapsulatesRawText(__classPrivateFieldGet(this, _PairSplitIgnoreRuleType_encapsulatesRawText, "f"));
+        return new PairSplitIgnoreRuleType(this.#pairChar).setEncapsulatesRawText(this.#encapsulatesRawText);
     }
 }
-_PairSplitIgnoreRuleType_pairChar = new WeakMap(), _PairSplitIgnoreRuleType_encapsulatesRawText = new WeakMap(), _PairSplitIgnoreRuleType_withinPair = new WeakMap();
 export class NestSplitIgnoreRuleType extends SplitIgnoreRule {
+    #nestStartChar;
+    #nestEndChar;
+    #nestIndex;
     constructor(nestStartChar, nestEndChar) {
         super();
-        _NestSplitIgnoreRuleType_nestStartChar.set(this, void 0);
-        _NestSplitIgnoreRuleType_nestEndChar.set(this, void 0);
-        _NestSplitIgnoreRuleType_nestIndex.set(this, void 0);
-        __classPrivateFieldSet(this, _NestSplitIgnoreRuleType_nestStartChar, nestStartChar, "f");
-        __classPrivateFieldSet(this, _NestSplitIgnoreRuleType_nestEndChar, nestEndChar, "f");
-        __classPrivateFieldSet(this, _NestSplitIgnoreRuleType_nestIndex, 0, "f");
+        this.#nestStartChar = nestStartChar;
+        this.#nestEndChar = nestEndChar;
+        this.#nestIndex = 0;
     }
     readChar(char) {
-        if (char == __classPrivateFieldGet(this, _NestSplitIgnoreRuleType_nestStartChar, "f")) {
-            __classPrivateFieldSet(this, _NestSplitIgnoreRuleType_nestIndex, __classPrivateFieldGet(this, _NestSplitIgnoreRuleType_nestIndex, "f") + 1, "f");
+        if (char == this.#nestStartChar) {
+            this.#nestIndex += 1;
         }
-        if (char == __classPrivateFieldGet(this, _NestSplitIgnoreRuleType_nestEndChar, "f")) {
-            if (__classPrivateFieldGet(this, _NestSplitIgnoreRuleType_nestIndex, "f") > 0) {
-                __classPrivateFieldSet(this, _NestSplitIgnoreRuleType_nestIndex, __classPrivateFieldGet(this, _NestSplitIgnoreRuleType_nestIndex, "f") - 1, "f");
+        if (char == this.#nestEndChar) {
+            if (this.#nestIndex > 0) {
+                this.#nestIndex -= 1;
             }
         }
     }
     shouldIgnore() {
-        return __classPrivateFieldGet(this, _NestSplitIgnoreRuleType_nestIndex, "f") > 0;
+        return this.#nestIndex > 0;
     }
     inRawText() {
         return false;
     }
     clone() {
-        return new NestSplitIgnoreRuleType(__classPrivateFieldGet(this, _NestSplitIgnoreRuleType_nestStartChar, "f"), __classPrivateFieldGet(this, _NestSplitIgnoreRuleType_nestEndChar, "f"));
+        return new NestSplitIgnoreRuleType(this.#nestStartChar, this.#nestEndChar);
     }
 }
-_NestSplitIgnoreRuleType_nestStartChar = new WeakMap(), _NestSplitIgnoreRuleType_nestEndChar = new WeakMap(), _NestSplitIgnoreRuleType_nestIndex = new WeakMap();
 function ignoringCompliantSplitStringMaxSplits(inputString, splitCharacter, retainBackslashes, ignoreRules, maxSplits) {
     let stringFragments = [];
     let builtStringFragment = "";
     let splits = 0;
     let oneTimeIgnoreRules = ignoreRules.map((ignoreRule) => ignoreRule.clone());
     for (let i = 0; i < inputString.length; i++) {
-        let string_char = inputString[i];
+        let stringChar = inputString[i];
         if (oneTimeIgnoreRules.some((ignoreRule) => ignoreRule.inRawText())) {
             oneTimeIgnoreRules.forEach((ignoreRule) => {
                 if (ignoreRule.inRawText()) {
-                    ignoreRule.readChar(string_char);
+                    ignoreRule.readChar(stringChar);
                 }
             });
         }
         else {
             oneTimeIgnoreRules.forEach((ignoreRule) => {
-                ignoreRule.readChar(string_char);
+                ignoreRule.readChar(stringChar);
             });
         }
-        if (string_char == "\\") {
+        if (stringChar == "\\") {
             i++;
-            let escaped_character = inputString[i];
-            if (escaped_character == null) {
+            let escapedChar = inputString[i];
+            if (escapedChar == null) {
                 break;
             }
             if (retainBackslashes) {
                 builtStringFragment = builtStringFragment + "\\";
             }
-            builtStringFragment = builtStringFragment + escaped_character;
+            builtStringFragment = builtStringFragment + escapedChar;
         }
-        else if (string_char == splitCharacter &&
+        else if (stringChar == splitCharacter &&
             !oneTimeIgnoreRules.some((ignoreRule) => ignoreRule.shouldIgnore()) &&
             (maxSplits == null || splits < maxSplits)) {
             stringFragments.push(builtStringFragment);
@@ -122,10 +108,10 @@ function ignoringCompliantSplitStringMaxSplits(inputString, splitCharacter, reta
             builtStringFragment = "";
         }
         else {
-            builtStringFragment = builtStringFragment + string_char;
+            builtStringFragment = builtStringFragment + stringChar;
         }
     }
-    if (builtStringFragment != "") {
+    if (builtStringFragment.length > 0) {
         stringFragments.push(builtStringFragment);
     }
     return stringFragments;
