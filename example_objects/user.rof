@@ -1,6 +1,7 @@
 {
 	name = "Jamzy";
-	age: usize = 112;
+	middle_name: enum<string> = Some("Jamzy");
+	age: usize = 117;
 	state: enum<f32> = Walking(0);
 	friends: array<string> = ["dorito", "", "", ""];
 	passwords: hashmap<usize, string> = {

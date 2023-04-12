@@ -17,7 +17,7 @@ TL;DR A library that can serialize and deserialize rust objects to string which 
 
 ### High Level API
 
-```rs
+```rust
 #[derive(RofCompat)]
 enum SongGenre {
     ROCK,
@@ -66,7 +66,7 @@ Almost any struct or enum can implement the ```RofCompat``` trait by using it's 
 
 As explained above you can implement ```RofCompat``` manually, as shown in the example below, it is recommended that you read over the low level api before trying this for yourself. This allows for more fine tuned control over how exactly your struct/enum is represented in a low level form.
 
-```rs
+```rust
 #[derive(Default)]
 struct Color {
     r: u8,
@@ -101,7 +101,7 @@ Unlike the low level api, using the ```RofCompat``` trait requires little unders
 
 The ```Rof``` object is responsible for all serializing and deserializing to files in Rof, and backs the higher level ```RofCompat``` trait. You can define a new ```Rof``` as follows.
 
-```rs
+```rust
 // Load computer file as a rof
 
 let computer_rof =

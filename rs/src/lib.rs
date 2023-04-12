@@ -22,6 +22,7 @@ mod tests {
     #[derive(Debug, Default, RofCompat)]
     struct User {
         name: String,
+        middle_name: Option<String>,
         age: usize,
         state: UserState,
         friends: Vec<String>,

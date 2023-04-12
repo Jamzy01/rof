@@ -1,7 +1,7 @@
 [package]
 name = "rof_rs_core"
 description = "Rust Object Format Core API for Rust. Please refer to the main crate to use Rust Object Format in your project."
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 license="ISC"
 repository="https://github.com/Jamzy01/rof"
