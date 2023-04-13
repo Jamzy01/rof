@@ -21,16 +21,11 @@ dependencies = [
 ]
 
 [[package]]
-name = "rof_rs_core"
-version = "0.1.0"
-
-[[package]]
 name = "rof_rs_macros"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "proc-macro2",
  "quote",
- "rof_rs_core",
  "syn",
 ]
 

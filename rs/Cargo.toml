@@ -10,4 +10,4 @@ readme="./README.md"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rof_rs_macros = {path = "./macros"}
+rof_rs_macros = "0.1.1"
