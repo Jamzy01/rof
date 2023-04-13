@@ -5,11 +5,14 @@ Rust object format allows rust objects to be serialized to a file in a text form
 TL;DR A library that can serialize and deserialize rust objects to string which allows simple file saving and transmission of rust objects between separate programming languages.
 
 [![Crates.io][crates-badge]][crates-url]
+[![Docs.rs][docs-badge]][docs-url]
 [![Github][github-badge]][github-url]
 [![ISC licensed][isc-badge]][isc-url]
 
-[crates-badge]: https://img.shields.io/badge/crates.io-v0.1.3-blue
-[crates-url]: https://crates.io/crates/rof-rs
+[crates-badge]: https://img.shields.io/badge/crates.io-v0.1.6-blue
+[crates-url]: https://crates.io/crates/rof_rs
+[docs-badge]: https://img.shields.io/badge/docs.rs-v0.1.6-blue
+[docs-url]: https://docs.rs/rof_rs/0.1.6/rof_rs/
 [github-badge]: https://img.shields.io/badge/repo-github-blue
 [github-url]: https://github.com/Jamzy01/rof/tree/main/rs
 [isc-badge]: https://img.shields.io/badge/license-ISC-blue.svg
@@ -18,7 +21,7 @@ TL;DR A library that can serialize and deserialize rust objects to string which 
 ### High Level API
 
 ```rust
-#[derive(RofCompat)]
+#[derive(RofCompatDerive)]
 enum SongGenre {
     ROCK,
     POP,
@@ -29,7 +32,7 @@ enum SongGenre {
     EDM
 }
 
-#[derive(RofCompat)]
+#[derive(RofCompatDerive)]
 struct Song {
     song_title: String,
     song_author: String,
@@ -51,7 +54,7 @@ fn main() {
 }
 ```
 
-The high level API is as simple as implementing the ```RofCompat``` trait for any rust struct or enum. This ```RofCompat``` trait allows you to serialize the object back to a low level ```DataValue``` strucutre, which can then be saved to a file. The ```RofCompat``` trait can also deserialize low level data value structures back into it's original form. The ```RofCompat``` trait also provides other utility functions such as
+The high level API is as simple as implementing the ```RofCompat``` trait using the ```RofCompatDerive``` macro. This ```RofCompat``` trait allows you to serialize the object back to a low level ```DataValue``` strucutre, which can then be saved to a file. The ```RofCompat``` trait can also deserialize low level data value structures back into it's original form. The ```RofCompat``` trait also provides other utility functions such as
 
 * serialize_to_string(&self, pretty_print: bool) -> String {}
 * deserialize_from_string(serialized_rof: &str) -> Self {}
@@ -184,4 +187,4 @@ Rof::new(Box::new(computer_struct_structure))
     .expect("Could not save computer to file");
 ```
 
-The low level api is there for anybody who wants to use it, although using the high level ```RofCompat``` api is recommended because it is more readable, requires much less boilerplate and is more beginner friendly.
+The low level api is there for anybody who wants to use it, although using the high level ```RofCompatDerive``` api is recommended because it is more readable, requires much less boilerplate and is more beginner friendly.

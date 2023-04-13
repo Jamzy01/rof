@@ -1,0 +1,102 @@
+impl rof_rs :: rof_compat :: RofCompat for User
+{
+    fn serialize(& self) -> Box < dyn rof_rs :: object_format :: DataValue >
+    {
+        Box ::
+        new(rof_rs :: object_format :: data_value :: struct_value ::
+        DataValueStruct ::
+        new(vec!
+        [rof_rs :: object_format :: property :: Property ::
+        new(String :: from("name"), self.name.serialize(),), rof_rs ::
+        object_format :: property :: Property ::
+        new(String :: from("middle_name"), self.middle_name.serialize(),),
+        rof_rs :: object_format :: property :: Property ::
+        new(String :: from("age"), self.age.serialize(),), rof_rs ::
+        object_format :: property :: Property ::
+        new(String :: from("state"), self.state.serialize(),), rof_rs ::
+        object_format :: property :: Property ::
+        new(String :: from("friends"), self.friends.serialize(),), rof_rs ::
+        object_format :: property :: Property ::
+        new(String :: from("passwords"), self.passwords.serialize(),), rof_rs
+        :: object_format :: property :: Property ::
+        new(String :: from("iq"), self.iq.serialize(),)]))
+    } fn
+    deserialize(rof_object : Box < dyn rof_rs :: object_format :: DataValue >)
+    -> Self
+    {
+        let mut deserialized_struct = Self :: default() ; let
+        rof_object_struct = rof_object.as_struct_structure() ; if let
+        Some(name) = rof_object_struct.get("name")
+        {
+            deserialized_struct.name = String ::
+            deserialize(name.clone_data_value()) ;
+        } ; if let Some(middle_name) = rof_object_struct.get("middle_name")
+        {
+            deserialized_struct.middle_name = Option ::
+            deserialize(middle_name.clone_data_value()) ;
+        } ; if let Some(age) = rof_object_struct.get("age")
+        {
+            deserialized_struct.age = usize ::
+            deserialize(age.clone_data_value()) ;
+        } ; if let Some(state) = rof_object_struct.get("state")
+        {
+            deserialized_struct.state = UserState ::
+            deserialize(state.clone_data_value()) ;
+        } ; if let Some(friends) = rof_object_struct.get("friends")
+        {
+            deserialized_struct.friends = Vec ::
+            deserialize(friends.clone_data_value()) ;
+        } ; if let Some(passwords) = rof_object_struct.get("passwords")
+        {
+            deserialized_struct.passwords = HashMap ::
+            deserialize(passwords.clone_data_value()) ;
+        } ; if let Some(iq) = rof_object_struct.get("iq")
+        {
+            deserialized_struct.iq = usize ::
+            deserialize(iq.clone_data_value()) ;
+        } deserialized_struct
+    }
+}
+impl rof_rs :: rof_compat :: RofCompat for UserState
+{
+    fn serialize(& self) -> Box < dyn rof_rs :: object_format :: DataValue >
+    {
+        Box ::
+        new(match self
+        {
+            Self :: Walking(arg_0) => rof_rs :: object_format :: data_value ::
+            enum_value :: DataValueEnum ::
+            new(String :: from("Walking"), vec!
+            [rof_rs :: object_format :: property :: Property ::
+            unnamed(f32 :: serialize(arg_0))]), Self :: Sleeping => rof_rs ::
+            object_format :: data_value :: enum_value :: DataValueEnum ::
+            simple(String :: from("Sleeping")), Self :: Jumping => rof_rs ::
+            object_format :: data_value :: enum_value :: DataValueEnum ::
+            simple(String :: from("Jumping")), Self :: Eating(arg_0) => rof_rs
+            :: object_format :: data_value :: enum_value :: DataValueEnum ::
+            new(String :: from("Eating"), vec!
+            [rof_rs :: object_format :: property :: Property ::
+            unnamed(String :: serialize(arg_0))])
+        })
+    } fn
+    deserialize(rof_object : Box < dyn rof_rs :: object_format :: DataValue >)
+    -> Self
+    {
+        let(enum_name, enum_args) = rof_object.as_enum_structure() ; match
+        enum_name.as_str()
+        {
+            "Walking" => Self ::
+            Walking(f32 ::
+            deserialize(enum_args.get(0).unwrap_or(& Box ::
+            new(f32 :: default().serialize())).clone_data_value())),
+            "Sleeping" => Self :: Sleeping, "Jumping" => Self :: Jumping,
+            "Eating" => Self ::
+            Eating(String ::
+            deserialize(enum_args.get(0).unwrap_or(& Box ::
+            new(String :: default().serialize())).clone_data_value())), _ =>
+            Self :: default(),
+        }
+    }
+}
+{"message":"variable does not need to be mutable","code":{"code":"unused_mut","explanation":null},"level":"warning","spans":[{"file_name":"src\\main.rs","byte_start":2341,"byte_end":2363,"line_start":105,"line_end":105,"column_start":9,"column_end":31,"is_primary":true,"text":[{"text":"    let mut computer_structure = computer_rof.get_object().as_struct_structure();","highlight_start":9,"highlight_end":31}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"`#[warn(unused_mut)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"remove this `mut`","code":null,"level":"help","spans":[{"file_name":"src\\main.rs","byte_start":2341,"byte_end":2345,"line_start":105,"line_end":105,"column_start":9,"column_end":13,"is_primary":true,"text":[{"text":"    let mut computer_structure = computer_rof.get_object().as_struct_structure();","highlight_start":9,"highlight_end":13}],"label":null,"suggested_replacement":"","suggestion_applicability":"MachineApplicable","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[38;5;11mwarning\u001b[0m\u001b[0m\u001b[1m\u001b[38;5;15m: variable does not need to be mutable\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;14m--> \u001b[0m\u001b[0msrc\\main.rs:105:9\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;14m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14m105\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;14m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    let mut computer_structure = computer_rof.get_object().as_struct_structure();\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;14m| \u001b[0m\u001b[0m        \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;14m----\u001b[0m\u001b[0m\u001b[1m\u001b[38;5;11m^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;14m| \u001b[0m\u001b[0m        \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;14m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;14m| \u001b[0m\u001b[0m        \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;14mhelp: remove this `mut`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;14m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;14m= \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;15mnote\u001b[0m\u001b[0m: `#[warn(unused_mut)]` on by default\u001b[0m\n\n"}
+{"message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[38;5;11mwarning\u001b[0m\u001b[0m\u001b[1m\u001b[38;5;15m: 1 warning emitted\u001b[0m\n\n"}

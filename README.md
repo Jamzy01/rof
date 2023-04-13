@@ -4,17 +4,18 @@ Rust object format allows rust objects to be serialized to a file in a text form
 
 TL;DR A library that can serialize and deserialize rust objects to string which allows simple file saving and transmission of rust objects between separate programming languages.
 
-## Table of contents
+## Quick Navigation
 
 [Design Goals](#design-goals)  
-[Language](#language)
+[Language](#language)  
+[Rust API](https://github.com/Jamzy01/rof/blob/main/rs/README.md)
 
 ## Design Goals
 
 * Human readable (easy to write and supports inline comments, and the file is in a text format)
 * Does not require any conversion when serializing and deserializing in rust
 * Easy to understand for somebody who has a good understanding of rust
-* Inspired by JSON, as a language that closely resembled another language's data structure
+* Inspired by JSON, as another language that closely resembles another language's data structure
 * An expansive set of inbuilt data types such as enums, tuples, options, arrays, hashmaps and more
 
 ## Use case

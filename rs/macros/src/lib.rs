@@ -1,7 +1,6 @@
 use proc_macro::TokenStream;
 use proc_macro2::{Ident, Span};
 use quote::quote;
-use rof_rs_core as rof;
 use syn::Type::Path;
 use syn::{
     parse_macro_input,
@@ -9,18 +8,18 @@ use syn::{
     DeriveInput, Field, FieldsNamed, FieldsUnnamed,
 };
 
-#[proc_macro_derive(RofCompat)]
+#[proc_macro_derive(RofCompatDerive)]
 pub fn derive(input: TokenStream) -> TokenStream {
     let DeriveInput { ident, data, .. } = parse_macro_input!(input);
 
     let mut serializer = quote! {
-        fn serialize(&self) -> Box<dyn DataValue> {
-            Box::new(DataValueEnum::none())
+        fn serialize(&self) -> Box<dyn rof_rs::object_format::DataValue> {
+            Box::new(rof_rs::object_format::data_value::enum_value::DataValueEnum::none())
         }
     };
 
     let mut deserializer = quote! {
-        fn deserialize(rof_object: Box<dyn DataValue>) -> Self {
+        fn deserialize(rof_object: Box<dyn rof_rs::object_format::DataValue>) -> Self {
             Self::default()
         }
     };
@@ -51,7 +50,7 @@ pub fn derive(input: TokenStream) -> TokenStream {
                                     ident.as_ref().unwrap().to_string();
 
                                     serializing_fields.push(quote! {
-                                        Property::new(
+                                        rof_rs::object_format::property::Property::new(
                                             String::from(#field_name),
                                             self.#ident.serialize(),
                                         )
@@ -72,15 +71,15 @@ pub fn derive(input: TokenStream) -> TokenStream {
             }
 
             serializer = quote! {
-                fn serialize(&self) -> Box<dyn DataValue> {
-                    Box::new(DataValueStruct::new(vec![
+                fn serialize(&self) -> Box<dyn rof_rs::object_format::DataValue> {
+                    Box::new(rof_rs::object_format::data_value::struct_value::DataValueStruct::new(vec![
                         #(#serializing_fields),*
                     ]))
                 }
             };
 
             deserializer = quote! {
-                fn deserialize(rof_object: Box<dyn DataValue>) -> Self {
+                fn deserialize(rof_object: Box<dyn rof_rs::object_format::DataValue>) -> Self {
                     let mut deserialized_struct = Self::default();
 
                     let rof_object_struct = rof_object.as_struct_structure();
@@ -120,7 +119,7 @@ pub fn derive(input: TokenStream) -> TokenStream {
                                         enum_args.push(arg_name.clone());
 
                                         serializing_properties.push(quote! {
-                                            Property::unnamed(#arg_type::serialize(#arg_name))
+                                            rof_rs::object_format::property::Property::unnamed(#arg_type::serialize(#arg_name))
                                         });
 
                                         deserializing_properties.push(quote! {
@@ -136,7 +135,7 @@ pub fn derive(input: TokenStream) -> TokenStream {
                         }
 
                         serializing_matches.push(quote! {
-                            Self::#variant_ident(#(#enum_args),*) => DataValueEnum::new(String::from(#variant_name), vec![#(#serializing_properties),*])
+                            Self::#variant_ident(#(#enum_args),*) => rof_rs::object_format::data_value::enum_value::DataValueEnum::new(String::from(#variant_name), vec![#(#serializing_properties),*])
                         });
 
                         deserializing_matches.push(quote! {
@@ -145,7 +144,7 @@ pub fn derive(input: TokenStream) -> TokenStream {
                     }
                     syn::Fields::Unit => {
                         serializing_matches.push(quote! {
-                            Self::#variant_ident => DataValueEnum::simple(String::from(#variant_name))
+                            Self::#variant_ident => rof_rs::object_format::data_value::enum_value::DataValueEnum::simple(String::from(#variant_name))
                         });
 
                         deserializing_matches.push(quote! {
@@ -157,7 +156,7 @@ pub fn derive(input: TokenStream) -> TokenStream {
             }
 
             serializer = quote! {
-                fn serialize(&self) -> Box<dyn DataValue> {
+                fn serialize(&self) -> Box<dyn rof_rs::object_format::DataValue> {
                     Box::new(match self {
                         #(#serializing_matches),*
                     })
@@ -165,7 +164,7 @@ pub fn derive(input: TokenStream) -> TokenStream {
             };
 
             deserializer = quote! {
-                fn deserialize(rof_object: Box<dyn DataValue>) -> Self {
+                fn deserialize(rof_object: Box<dyn rof_rs::object_format::DataValue>) -> Self {
                     let (enum_name, enum_args) = rof_object.as_enum_structure();
 
                     match enum_name.as_str() {
@@ -178,8 +177,19 @@ pub fn derive(input: TokenStream) -> TokenStream {
         _ => (),
     }
 
+    eprintln!(
+        "{}",
+        quote! {
+            impl rof_rs::rof_compat::RofCompat for #ident {
+                #serializer
+
+                #deserializer
+            }
+        }
+    );
+
     quote! {
-        impl RofCompat for #ident {
+        impl rof_rs::rof_compat::RofCompat for #ident {
             #serializer
 
             #deserializer
