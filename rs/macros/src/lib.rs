@@ -227,17 +227,6 @@ pub fn derive(input: TokenStream) -> TokenStream {
         _ => (),
     }
 
-    eprintln!(
-        "{}",
-        quote! {
-            impl rof_rs::rof_compat::RofCompat for #ident {
-                #serializer
-
-                #deserializer
-            }
-        }
-    );
-
     quote! {
         impl rof_rs::rof_compat::RofCompat for #ident {
             #serializer
