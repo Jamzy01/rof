@@ -9,30 +9,36 @@ TL;DR A library that can serialize and deserialize rust objects to string which 
 [![Github][github-badge]][github-url]
 [![ISC licensed][isc-badge]][isc-url]
 
-[crates-badge]: https://img.shields.io/badge/crates.io-v0.1.6-blue
-[crates-url]: https://crates.io/crates/rof_rs
-[docs-badge]: https://img.shields.io/badge/docs.rs-v0.1.6-blue
-[docs-url]: https://docs.rs/rof_rs/0.1.6/rof_rs/
-[github-badge]: https://img.shields.io/badge/repo-github-blue
+```properties
+cargo add rof-rs
+```
+
+[crates-badge]: https://img.shields.io/badge/crates.io-v0.1.6-blue?style=flat&logo=rust
+[crates-url]: https://crates.io/crates/rof-rs
+[docs-badge]: https://img.shields.io/badge/docs.rs-v0.1.6-blue?style=flat&logo=docs.rs
+[docs-url]: https://docs.rs/rof-rs/0.1.6/rof_rs/
+[github-badge]: https://img.shields.io/badge/repo-github-blue?style=flat&logo=github
 [github-url]: https://github.com/Jamzy01/rof/tree/main/rs
-[isc-badge]: https://img.shields.io/badge/license-ISC-blue.svg
+[isc-badge]: https://img.shields.io/badge/license-ISC-blue.svg?style=flat
 [isc-url]: https://github.com/Jamzy01/rof/blob/main/LICENSE
 
 ### High Level API
 
 ```rust
-#[derive(RofCompatDerive)]
+#[derive(RofCompat)]
 enum SongGenre {
     ROCK,
     POP,
     HIPHOP,
+    RAP,
     JAZZ,
     COUNTRY,
     HEAVYMETAL,
-    EDM
+    EDM,
+    CLASSICAL,
 }
 
-#[derive(RofCompatDerive)]
+#[derive(RofCompat)]
 struct Song {
     song_title: String,
     song_author: String,
@@ -42,19 +48,19 @@ struct Song {
 
 fn main() {
     let mut song =
-            Song::load_from_file("C:\\Songs\\Song32.rof");
+            Song::load_from_file("C:\\songs\\song_32.rof");
 
     song.timestamp += 1; // Increment the timestamp by 1
 
     song.save_to_file(
-            "C:\\Songs\\Song32.rof",
+            "C:\\songs\\song_32.rof",
             true /* pretty print option, adds tabs, spaces and newlines to make the file more human-readable, but will not change the data itself in any way */,
         )
         .expect("Could not save song to a file");
 }
 ```
 
-The high level API is as simple as implementing the ```RofCompat``` trait using the ```RofCompatDerive``` macro. This ```RofCompat``` trait allows you to serialize the object back to a low level ```DataValue``` strucutre, which can then be saved to a file. The ```RofCompat``` trait can also deserialize low level data value structures back into it's original form. The ```RofCompat``` trait also provides other utility functions such as
+The high level API is as simple as implementing the ```RofCompat``` trait using the ```RofCompat``` macro. This ```RofCompat``` trait allows you to serialize the object back to a low level ```DataValue``` strucutre, which can then be saved to a file. The ```RofCompat``` trait can also deserialize low level data value structures back into it's original form. The ```RofCompat``` trait also provides other utility functions such as
 
 * serialize_to_string(&self, pretty_print: bool) -> String {}
 * deserialize_from_string(serialized_rof: &str) -> Self {}
@@ -94,6 +100,17 @@ impl RofCompat for Color {
         }
     }
 }
+
+let mut color = Color::load_from_file("C:\\example_objects\\color.rof");
+
+color.r = (color.r + 1) % 255;
+
+color
+    .save_to_file(
+        "C:\\example_objects\\color.rof",
+        true,
+    )
+    .expect("Could not save color to file");
 ```
 
 The utility functions are implemented for you based on those two functions. As you can see, now the stored data is much more concise and this is a good example of even though not always necessary, sometimes implementing ```RofCompat``` manually is a good idea.
@@ -108,7 +125,7 @@ The ```Rof``` object is responsible for all serializing and deserializing to fil
 // Load computer file as a rof
 
 let computer_rof =
-    Rof::load_from_file("J:\\Programming\\Rust\\rof\\example_objects\\computer.rof");
+    Rof::load_from_file("C:\\example_objects\\computer.rof");
 
 // Convert the rof to a struct structure
 
@@ -181,10 +198,10 @@ let computer_struct_structure = DataValueStruct::new(computer_struct_properties)
 
 Rof::new(Box::new(computer_struct_structure))
     .save_to_file(
-        "J:\\Programming\\Rust\\rof\\example_objects\\computer.rof",
+        "C:\\example_objects\\computer.rof",
         true,
     )
     .expect("Could not save computer to file");
 ```
 
-The low level api is there for anybody who wants to use it, although using the high level ```RofCompatDerive``` api is recommended because it is more readable, requires much less boilerplate and is more beginner friendly.
+The low level api is available for anybody who wants to use it, although using the high level ```RofCompat``` api is recommended because it is more readable, requires much less boilerplate and is more beginner friendly.

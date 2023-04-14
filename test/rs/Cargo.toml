@@ -6,4 +6,4 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rof_rs = { path = "../../rs", version="0.1.5" }
+rof-rs = { path = "../../rs", version="0.1.5" }

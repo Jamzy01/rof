@@ -7,7 +7,7 @@ pub mod data_value;
 
 pub mod property;
 
-use self::property::{property_type::PropertyType, Property};
+use self::property::property_type::PropertyType;
 
 pub trait DataValue: Debug {
     // Serliazing and Deserializing
@@ -153,18 +153,6 @@ impl Eq for dyn DataValue {}
 impl Hash for dyn DataValue {
     fn hash<H: Hasher>(&self, state: &mut H) {
         self.serialize(false, 0).1.hash(state)
-    }
-}
-
-pub struct DataObject {
-    properties: Vec<Property>,
-}
-
-impl DataObject {
-    pub fn new() -> Self {
-        Self {
-            properties: Vec::new(),
-        }
     }
 }
 

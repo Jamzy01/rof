@@ -53,14 +53,11 @@ impl DataValue for DataValueArray {
     where
         Self: Sized,
     {
-        if serialized_type.get_base_type() != "array" || !serialized_type.sub_types_included() {
+        if serialized_type.get_base_type() != "array" {
             return None;
         }
 
-        if !(serialized_value.starts_with("[")
-            && serialized_value.ends_with("]")
-            && serialized_value.chars().count() > 2)
-        {
+        if !(serialized_value.starts_with("[") && serialized_value.ends_with("]")) {
             return None;
         }
 

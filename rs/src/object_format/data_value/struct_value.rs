@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use crate::object_format::{
     ignore_str_split::{ignoring_compliant_split_str, SplitIgnoreRule, SplitIgnoreRuleType},
-    property::{self, property_type::PropertyType, Property},
+    property::{property_type::PropertyType, Property},
     DataValue,
 };
 

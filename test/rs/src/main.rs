@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use rof_rs::macros::RofCompatDerive;
+use rof_rs::macros::RofCompat;
 
 use rof_rs::rof_compat::RofCompat;
 
@@ -15,7 +15,7 @@ use rof_rs::object_format::data_value::{
     struct_value::DataValueStruct,
 };
 
-#[derive(Debug, Default, RofCompatDerive)]
+#[derive(Debug, Default, RofCompat)]
 struct User {
     name: String,
     middle_name: Option<String>,
@@ -26,7 +26,7 @@ struct User {
     iq: usize,
 }
 
-#[derive(Debug, Default, RofCompatDerive)]
+#[derive(Debug, Default, RofCompat)]
 enum UserState {
     Walking(f32),
     #[default]

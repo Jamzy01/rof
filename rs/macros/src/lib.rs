@@ -8,7 +8,57 @@ use syn::{
     DeriveInput, Field, FieldsNamed, FieldsUnnamed,
 };
 
-#[proc_macro_derive(RofCompatDerive)]
+/// # Rof Compat Derive Macro
+///
+/// Derive macro that automatically implements the RofCompat trait for any struct or enum where the struct/enum's fields all implement the RofCompat.
+/// The inbuilt types that implement ```RofCompat``` include
+/// * bool
+/// * char
+/// * f32, f64
+/// * u8, i8, u16, i16, u32, i32, u64, i64, u128, i128, usize, isize
+/// * String (not str)
+/// * Vec<T> where T: RofCompat
+/// * Hashmap<K, V> where K: RofCompat, V: RofCompat
+/// * Option<T> where T: RofCompat
+///
+/// ## Example
+///
+/// ```
+/// #[derive(RofCompat)]
+/// enum SongGenre {
+///     ROCK,
+///     POP,
+///     HIPHOP,
+///     RAP,
+///     JAZZ,
+///     COUNTRY,
+///     HEAVYMETAL,
+///     EDM,
+///     CLASSICAL,
+/// }
+///
+/// #[derive(RofCompat)]
+/// struct Song {
+///     song_title: String,
+///     song_author: String,
+///     timestamp: usize,
+///     song_genre: SongGenre
+/// }
+///
+/// fn main() {
+///     let mut song =
+///             Song::load_from_file("C:\\songs\\song_32.rof");
+///
+///     song.timestamp += 1; // Increment the timestamp by 1
+///
+///     song.save_to_file(
+///             "C:\\songs\\song_32.rof",
+///             true /* pretty print option, adds tabs, spaces and newlines to make the file more human-readable, but will not change the data itself in any way */,
+///         )
+///         .expect("Could not save song to a file");
+/// }
+/// ```
+#[proc_macro_derive(RofCompat)]
 pub fn derive(input: TokenStream) -> TokenStream {
     let DeriveInput { ident, data, .. } = parse_macro_input!(input);
 

@@ -21,7 +21,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rof_rs"
+name = "rof-rs"
 version = "0.1.6"
 dependencies = [
  "rof_rs_macros",
@@ -40,7 +40,7 @@ dependencies = [
 name = "rof_test"
 version = "0.1.0"
 dependencies = [
- "rof_rs",
+ "rof-rs",
 ]
 
 [[package]]
